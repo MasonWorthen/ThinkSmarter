@@ -641,6 +641,7 @@ $('td').click(function(){
    $('.userGameStatus').text("You win!! Your opponenet disconnected unexpectedly.")
    $('.userGameMessage').text(result['message'])
    if(match != null){
+    $(".match-parent").show()
     $('.lobbybtn').show();
 $("#myModal").modal('show'); 
 headersLetters = ["a","b","c","d","e","f","g","h"];
