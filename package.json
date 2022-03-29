@@ -1,0 +1,30 @@
+{
+  "name": "thinksmarter-socketio-webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DatalockHS/thinksmarter-socketio-webapp.git"
+  },
+  "author": "Mason Worthen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DatalockHS/thinksmarter-socketio-webapp/issues"
+  },
+  "homepage": "https://github.com/DatalockHS/thinksmarter-socketio-webapp#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "firebase": "^9.6.1",
+    "js-chess-engine": "^1.0.2",
+    "random-key": "^0.3.2",
+    "socket.io": "^4.4.0"
+  }
+}

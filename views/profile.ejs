@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ThinkSmarter | Home </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/match-stylesheet.css" rel="stylesheet"/>
+    <script src="js/home-jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/thinksmarter-socketio.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body class="bg-dark text-white">
+    <span class="identifier" hidden><%= uid %></span>
+    <div class="container-fluid home">
+      <div class="alert alert-success text-center status"  style="position: absolute; width: 100%; top:5px;">
+        <strong>Successful!</strong> Connection Established!
+      </div>
+      <div class="alert alert-success text-center sent"  style="position: absolute; width: 100%; top:5px;">
+        <strong>Success</strong> Your request has been sent!
+      </div>
+      <div class="alert alert-danger text-center cancel"  style="position: absolute; width: 100%; top:5px;">
+        <strong>Canceled</strong> Your request has been canceled!
+      </div>
+
+<br/>
+
+<div class = "container-fluid p-3" style="border: 1px solid white;">
+      <!-- Carousel -->
+<div id="demo" class="carousel slide text-center" data-bs-ride="carousel">
+
+
+
+<!-- The slideshow/carousel -->
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <p>Checkout the source code! <a class="text-white" href="#">Github</a></p>
+  </div>
+  <div class="carousel-item">
+    <p>Contribute to the research by completing a <a href="/survey"  class="text-white">survey</a></p>
+  </div>
+  <div class="carousel-item">
+    <p>Senior Research Thinksmarter <a href="#"  class="text-white">Learn more</a></p>
+  </div>
+</div>
+</div>
+    <div class = "row">
+       <div class = "col-sm-2" style = " height:100vh; color:  white; border-bottom: none; border-left: 1px solid white; border-right: 1px solid white; border-top: 1px solid white;overflow-y: auto;">
+       
+
+    <h7>Status: <span>Active  </span><span class="text-success">&#11044;</span> <a class="text-warning" href="/logout">Logout</a></h7>
+    <hr/>
+
+    <h7 class="text-center"><span>Game requests  </span><span><span class="badge bg-warning gamerequestcount">0</span></span> </h7>
+    <hr/>
+    <ul class="list-unstyled" id="request">
+
+    </ul>
+
+   <button type="button" class="btn btn-outline-warning send" style="width: 100%">&#10148;</button>
+    
+    <form style="width: 100%;">
+        <br/>
+        <input type=text class="messagebox bg-transparent text-white" placeholder="@type you message" style="width: 100%">
+    
+    </form>
+    <br/>
+    <h7 class="" style="width:100%; text-align: center;">Messenger</h7>
+    <hr/>
+
+    <div class="globalct messages" style="overflow-y:auto; height: 450px;">
+    </div>
+  
+    
+
+            
+</div>
+       <div class = "col-sm-8 p-3" style = " color: white; border: 1px solid white;">
+        <div class="container-fluid" >
+            <div class = "row">
+                <div class = "col-sm-4 text-center" id="username"><p><%= data["profile"]["username"] %></p></div>
+                <div class = "col-sm-4 text-center" id="userWins"><p>wins  <%= data["standings"]["wins"] %></p></div>
+                <div class = "col-sm-4 text-center" id="userLoses"><p>loses  <%= data["standings"]["loses"] %></p></div>
+
+            </div>
+            
+            
+            
+            <div class="container me-auto text-center p-4">
+               <!-- <table class="table table-dark table-hover text-center" >
+                    <thead>
+                      <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>john@example.com</td>
+                      </tr>
+                      <tr>
+                        <td>Mary</td>
+                        <td>Moe</td>
+                        <td>mary@example.com</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>Dooley</td>
+                        <td>july@example.com</td>
+                      </tr>
+                    </tbody>
+                  </table>-->
+        
+</br>
+                    <button type="button" class="btn btn-outline-warning lobbybtn" style="width: 250px; font-size: 20px;">&#9895;</button>
+
+                    <button type="button" class="btn btn-outline-warning cpu" style="width: 250px;"><span style="font-size: 20px;">&#9863;</span></button>
+
+                    <button type="button" class="btn btn-outline-warning surrender" style="width: 250px; font-size: 20px;">&#9872;</button>
+                    
+                  
+            </div>
+        
+        
+        
+        <div class="container match-parent" style="height:200px; overflow-y:auto;">
+
+          <h6 class="text-center ">Matches</h6>
+        <hr/>
+            <table class="table table-dark table-hover text-center" >
+                <thead>
+                  <tr>
+                    <th>Match</th>
+                    <th>Status</th>
+                    <th>Join</th>
+                  </tr>
+                </thead>
+                <tbody class="matches">
+                
+                </tbody>
+              </table>
+       
+        </div>
+        <div class="container-fluid text-center p-3 game" style="border:1px solid white; width:100%;">
+          <div class="container-fluid game-promotion">
+
+          </div>
+            <div class="row">
+                <div class="col-sm">
+                      <table class="chess-board text-center">
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th>a</th>
+                    <th>b</th>
+                    <th>c</th>
+                    <th>d</th>
+                    <th>e</th>
+                    <th>f</th>
+                    <th>g</th>
+                    <th>h</th>
+                </tr>
+                <tr>
+                    <th>8</th>
+                    <td class="light a8">&#9820;</td>
+                    <td class="dark b8">&#9822;</td>
+                    <td class="light c8">&#9821;</td>
+                    <td class="dark d8">&#9819;</td>
+                    <td class="light e8">&#9818;</td>
+                    <td class="dark f8">&#9821;</td>
+                    <td class="light g8">&#9822;</td>
+                    <td class="dark h8">&#9820;</td>
+                </tr>
+                <tr>
+                    <th>7</th>
+                    <td class="dark a7">&#9823;</td>
+                    <td class="light b7">&#9823;</td>
+                    <td class="dark c7">&#9823;</td>
+                    <td class="light d7">&#9823;</td>
+                    <td class="dark e7">&#9823;</td>
+                    <td class="light f7">&#9823;</td>
+                    <td class="dark g7">&#9823;</td>
+                    <td class="light h7">&#9823;</td>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <td class="light a6"></td>
+                    <td class="dark b6"></td>
+                    <td class="light c6"></td>
+                    <td class="dark d6"></td>
+                    <td class="light e6"></td>
+                    <td class="dark f6"></td>
+                    <td class="light g6"></td>
+                    <td class="dark h6"></td>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <td class="dark a5"></td>
+                    <td class="light b5"></td>
+                    <td class="dark c5"></td>
+                    <td class="light d5"></td>
+                    <td class="dark e5"></td>
+                    <td class="light f5"></td>
+                    <td class="dark g5"></td>
+                    <td class="light h5"></td>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <td class="light a4"></td>
+                    <td class="dark b4"></td>
+                    <td class="light c4"></td>
+                    <td class="dark d4"></td>
+                    <td class="light e4"></td>
+                    <td class="dark f4"></td>
+                    <td class="light g4"></td>
+                    <td class="dark h4"></td>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <td class="dark a3"></td>
+                    <td class="light b3"></td>
+                    <td class="dark c3"></td>
+                    <td class="light d3"></td>
+                    <td class="dark e3"></td>
+                    <td class="light f3"></td>
+                    <td class="dark g3"></td>
+                    <td class="light h3"></td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td class="light a2">&#9817;</td>
+                    <td class="dark b2">&#9817;</td>
+                    <td class="light c2">&#9817;</td>
+                    <td class="dark d2">&#9817;</td>
+                    <td class="light e2">&#9817;</td>
+                    <td class="dark f2">&#9817;</td>
+                    <td class="light g2">&#9817;</td>
+                    <td class="dark h2">&#9817;</td>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td class="dark a1">&#9814;</td>
+                    <td class="light b1">&#9816;</td>
+                    <td class="dark c1">&#9815;</td>
+                    <td class="light d1">&#9813;</td>
+                    <td class="dark e1">&#9812;</td>
+                    <td class="light f1">&#9815;</td>
+                    <td class="dark g1">&#9816;</td>
+                    <td class="light h1">&#9814;</td>
+                </tr>
+                </tbody>
+            </table>
+                </div>
+                <div class="col-sm">
+                      <div class="moves">
+
+                                    </div>
+                </div>
+            </div>
+          
+        </div>
+        <div class="container-fluid body search text-center">
+            <br/>
+           
+            <h4 class="text-white">Searching for your opponent....</h4>
+            <br/>
+            <div class="spinner-border text-light"></div>
+            <br/>
+            <br/>
+            <button type="button" class="btn btn-outline-warning canceled" style="width: 250px; font-size: 20px;"> Cancel</button>
+            <button type="button" class="btn btn-outline-warning canceledr" style="width: 250px; font-size: 20px;"> Cancel</button>
+            <br/>
+            
+        </div>
+      <hr/>
+    
+       </div>
+
+ </div>
+<div class = "col-sm-2" style =" color: white;height:100vh; border-bottom: none; border-left: 1px solid white; border-right: 1px solid white; border-top: 1px solid white; overflow-y:auto;"> <h7>
+           Users  </h7><span class="badge bg-danger usercount"> 21</span>
+        <hr/>
+        <br/>
+        <div>
+
+            <p class="text-center">Find active users</p>
+            
+            <p class="text-center" style="width: 100%;"><input id="myInput" type="text" placeholder="Search.."class="bg-transparent text-white"style="width: 100%;"></p>
+            
+            <ul class="list-unstyled text-center" id="active">
+              
+            </ul>
+            
+            </div>
+      
+    
+    </div>
+    </div>
+    <br/>
+    
+
+
+<footer class="text-center text-lg-start bg-transparent text-white">
+
+    <div class="text-center p-4  bg-transparent text-white" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2021 Copyright:
+        <p class="text-reset" >Royalwebsters LLC. All Rights Reserved</p>
+
+        <a href="#" class="fa fa-github"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-instagram"></a>
+    </div>
+</footer>
+
+</div>
+
+<!-- The Modal -->
+<div class=" modal modal-fullscreen" id="myModal">
+<div class="modal-dialog">
+  <div class="modal-content">
+
+    <!-- Modal Header -->
+    <div class="modal-header bg-dark">
+      <h4 class="modal-title userGameStatus">Modal Heading</h4>
+      <button type="button text-white" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body  bg-dark">
+      <div class="container">
+        <section class="h-100 gradient-form bg-transparent">
+            <div class="container  h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-xl-10">
+                        <div class="card rounded-3 text-white" style="border: none;">
+                            <div class="bg-dark text-center">
+                                <h3 class="text-center">Game over</h3>
+                                <div class="container text-center">
+
+                                    <script>
+                                        $(document).ready(function() {
+
+                                            $("li").click(function (){
+
+                                                for(let x=0; x<5;x++){
+                                                    $("li").eq(x.toString()).html("&#10032;");
+                                                }
+
+                                                let index = $(this).index()
+                                                for(let x=index; x>=0;x--){
+                                                    $("li").eq(x.toString()).html("&#9733;");
+                                                }
+                                            });
+
+
+
+
+                                        });
+                                    </script>
+                                  
+                                </div>
+
+                                <div class="container-fluid">
+
+                                    <br/>
+                                    <br/>
+                                    <hr/>
+                                    <br/>
+
+                                    <p>It is important for every person to have a choice. 
+                                      Having the ability to make choices gives us the opportunity to experience what we all know as life.
+                                       Throughout this research, we will discover how effective different machine learning models are at playing 
+                                       the game of chess against human opponents and come to a conclusion about our hypothesis that games relate to improved brain functionality.</p>
+                                    <br/>
+                                    <br/>
+                                    <a href="/survey" class="btn btn-outline-danger" style="width: 250px;">Survey</a>
+                                    <br/>
+                                    <br/>
+                                </div>
+
+                                <div>
+                                        <pre class="userGameData">
+                                          
+                                        </pre>
+
+                                   
+                                    <br/>
+
+                                    <div class="container text-center userGameMessage">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    </div>
+
+    <!-- Modal footer -->
+
+  </div>
+</div>
+</div>
+
+
+
+    </div>
+   
+</body>
+</html>
