@@ -86,7 +86,6 @@
                 <div class = "col-sm-4 text-center" id="username"><p><%= data["profile"]["username"] %></p></div>
                 <div class = "col-sm-4 text-center" id="userWins"><p>wins  <%= data["standings"]["wins"] %></p></div>
                 <div class = "col-sm-4 text-center" id="userLoses"><p>loses  <%= data["standings"]["loses"] %></p></div>
-
             </div>
             
             
@@ -153,8 +152,11 @@
           <div class="container-fluid game-promotion">
 
           </div>
-            <div class="row">
+          <p class="playerOpp"></p>
+            <p class="playerTurn"></p>
+          <div class="row">
                 <div class="col-sm">
+                        
                       <table class="chess-board text-center">
                 <tbody>
                 <tr>
@@ -265,6 +267,7 @@
                                     </div>
                 </div>
             </div>
+            
           
         </div>
         <div class="container-fluid body search text-center">

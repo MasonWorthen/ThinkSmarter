@@ -361,7 +361,18 @@ socket.on("updtmatch",(matchids,status)=>{
         $(".search").hide();
         color = player;
 
+        
+
         current = turn
+        $('.playerTurn').text("Color: "+color)
+
+        if(current ==color){
+            $('.playerOpp').text("Your turn")
+        }
+        else{
+            $('.playerOpp').text("Waiting for opponent...")
+        }
+        
         console.log()
         console.log(current);
         console.log(color);
@@ -397,6 +408,13 @@ socket.on("updtmatch",(matchids,status)=>{
 
     socket.on("switch",(turn)=>{
         current = turn;
+
+        if(current == color){
+            $('.playerOpp').text("Your turn")
+        }
+        else{
+            $('.playerOpp').text("Waiting for opponent...")
+        }
     });
 
  
