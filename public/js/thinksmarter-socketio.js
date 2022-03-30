@@ -334,6 +334,7 @@ socket.on("updtmatch",(matchids,status)=>{
                         $(".promotion").show();
                     }
                 }
+
                 else{
                     socket.emit("moves",{start:chose,last:move,piece:piece,condition:false},match);
                    
@@ -828,18 +829,27 @@ $('td').click(function(){
         else if(move == null){
             move = location;
             jQueryMove = $this;
-            if((move).toUpperCase().indexOf("1") >=0  && color == "black") {
+
+            if(chose.toUpperCase().includes('7') && piece ==  "♙"){
+                allowPromotion = true;
+            }
+
+            if(chose.toUpperCase().includes('2') && piece ==  "♟"){
+                allowPromotion = true;
+            }
+            if((move).toUpperCase().includes('1') && color == "black"  && allowPromotion) {
 
                 if (piece == "♟"){
                     $(".promotion").show();
                 }
 
             }
-            else if((move).toUpperCase().indexOf("8") >=0 && color =="white"){
+            else if((move).toUpperCase().includes('8') && color =="white" && allowPromotion){
                 if (piece == "♙"){
                     $(".promotion").show();
                 }
             }
+            
             else{
                 socket.emit("moves",{start:chose,last:move,piece:piece,condition:false},match);
                
@@ -855,6 +865,7 @@ $('td').click(function(){
         }
     }
 });
+
 
     });
 
