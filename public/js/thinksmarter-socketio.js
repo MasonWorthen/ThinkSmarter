@@ -7,6 +7,7 @@ $(document).ready(function(){
     let userWins = 0;
     let userLoses = 0;
     let jQueryChose = null;
+    let allowPromotion = false;
     let jQueryMove = null;
     let move = null;
     let possibleChose = null;
@@ -313,14 +314,22 @@ socket.on("updtmatch",(matchids,status)=>{
             else if(move == null){
                 move = location;
                 jQueryMove = $this;
-                if((move).toUpperCase().indexOf("1") >=0  && color == "black") {
+
+                if(chose.toUpperCase().includes('7') && piece ==  "♙"){
+                    allowPromotion = true;
+                }
+
+                if(chose.toUpperCase().includes('2') && piece ==  "♟"){
+                    allowPromotion = true;
+                }
+                if((move).toUpperCase().includes('1') && color == "black"  && allowPromotion) {
 
                     if (piece == "♟"){
                         $(".promotion").show();
                     }
 
                 }
-                else if((move).toUpperCase().indexOf("8") >=0 && color =="white"){
+                else if((move).toUpperCase().includes('8') && color =="white" && allowPromotion){
                     if (piece == "♙"){
                         $(".promotion").show();
                     }
@@ -372,18 +381,20 @@ socket.on("updtmatch",(matchids,status)=>{
         else{
             $('.playerOpp').text("Waiting for opponent...")
         }
-        
-        console.log()
-        console.log(current);
-        console.log(color);
 
         if(color=="black"){
-            $(".game-promotion").html(`<button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9818;</button><button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9821;</button>
-        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9822;</button><button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9820;</button>`);
+            $(".game-promotion").html(`
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9818;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9821;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9822;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9820;</button>`);
         }
         else{
-            $(".game-promotion").html(`<button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9813;</button><button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9816;</button>
-        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9815;</button><button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9814;</button>`);
+            $(".game-promotion").html(`
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9813;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9816;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9815;</button>
+        <button type="button" class="btn btn-outline-danger promotion" style="width: 300px;">&#9814;</button>`);
         }
 
         $(".promotion").click(function (){
@@ -400,6 +411,8 @@ socket.on("updtmatch",(matchids,status)=>{
     
             chose = null;
             move = null;
+
+            allowPromotion = false;
         });
 
         $(".promotion").hide();
@@ -470,6 +483,7 @@ $("#myModal").modal('show');
  headersNumber = ["8","7","6","5","4","3","2","1"];
 chose = null;
 jQueryChose = null;
+allowPromotion = false;
 jQueryMove = null;
 move = null;
 possibleChose = null;
@@ -668,6 +682,7 @@ chose = null;
 jQueryChose = null;
 jQueryMove = null;
 move = null;
+allowPromotion = false;
 possibleChose = null;
 piece = null;
 color = null;
