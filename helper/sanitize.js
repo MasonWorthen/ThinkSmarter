@@ -1,7 +1,8 @@
 let err = {
     'LoginErrorMessgae': '',
     'RegisterErrorMessage':'',
-    'RecoveryPageMessage':''
+    'RecoveryPageMessage':'',
+    'SurveyPageMessage': ''
 }
 const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
@@ -46,6 +47,16 @@ module.exports = function(req,type){
             err['RecoveryPageMessage'] = '';
             return [err,req.body]; 
         }
+    }
+    else if(type=='survey'){
+
+        if(req.body.gender == ""||req.body.age == ""||req.body.critical == ""||req.body.improvementdec == "" ||req.body.improvementmem == "" ){
+            err["isValid"] = false
+            err['SurveyErrorMessage'] = 'One or more of your required fields are empty';
+            err['SurveyPageMessage'] = '';
+            return [err,req.body]; 
+        }
+            
     }
 
     err["isValid"] = true;

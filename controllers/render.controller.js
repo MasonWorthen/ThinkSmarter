@@ -35,7 +35,7 @@ function renderResults(req,res){
     res.render('results',{data:req.params.data});
 }
 function renderSurvey(req,res){
-  res.render('survey',{});
+  res.render('survey',{'SurveyPageMessage':'','SurveyErrorMessage': ''});
 }
 function renderResearch(req,res){{
     res.render("research",{});
