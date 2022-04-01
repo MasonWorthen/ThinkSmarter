@@ -40,12 +40,9 @@ div.WordSection1
 </style>
 </head>
 <body class="bg-black">
-<div class="container text-center">
-        <img  src="images/dark-thinksmarter.png" style="height: 200px; width:300px;"/>
-    </div>
-    
+
 <div class="container text-center"> 
-    <img src="images/posters.png"/>
+    <!--<img src="images/posters.png"/>-->
     <section class="h-100 gradient-form bg-transparent">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -59,6 +56,75 @@ div.WordSection1
             </div>
         </div>
     </section>
+<<<<<<< Updated upstream
+=======
+    <h6 class="text-white">Surveys Completed <%= data["total"]%></h6>
+    <table class="table table-bordered bg-dark text-white">
+        <thead>
+          <tr>
+            <th>Males</th>
+            <th>Females</th>
+            <th>Non-binary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="male"><%= data["male"]%></td>
+            <td class="female"><%= data["female"]%></td>
+            <td class="other"><%= data["non-binary"]%></td>
+          </tr>
+
+       
+        </tbody>
+      </table>
+      <table class="table table-bordered bg-dark text-white">
+        <thead>
+          <tr>
+            <th>Males</th>
+            <th>Females</th>
+            <th>Non-binary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= data['percentage']["male"]%> %</td>
+            <td><%= data ['percentage']["female"]%> %</td>
+            <td><%= data ['percentage']["non-binary"]%> %</td>
+          </tr>
+
+        </tbody>
+      </table>
+      <tr>
+
+      </tr>
+      <br/>
+      <table class="table table-bordered bg-dark text-white">
+        <thead>
+          <tr>
+            <th>Improvement to Critcal  Thinking</th>
+            <th>Improvement to Memorization</th>
+            <th>Decsion Making-Skills Improvement/th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="critical"><%= data["critical"]%></td>
+            <td class="memory"><%= data["memory"]%></td>
+            <td class="decide"><%= data["decision"]%></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+
+
+
+  <div class="graphs row text-center p-5 align-items-center">
+       
+
+</div>   
+>>>>>>> Stashed changes
 </div>
 <footer class="text-center text-lg-start bg-transparent text-white">
 
