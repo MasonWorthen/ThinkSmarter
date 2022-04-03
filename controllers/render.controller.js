@@ -73,6 +73,9 @@ function renderResearch(req,res){
                 else{
                     non_binary +=1;
                 }
+
+                }    
+
             }
             const researchObj = {
                 'memory':memTotal,
@@ -90,17 +93,15 @@ function renderResearch(req,res){
             }
             res.render("research",{"data":researchObj});
             res.end();
-           }
-         else{
+        } else {
             res.render("research",{"data":{}});
             res.end();
-         }
-         
+        }
     }).catch((error) => {
         res.end(error)
     });
-}
-      
+    }
+    
 function renderRegister(req,res){
     res.render('register',{'RegisterErrorMessage':''});
 }
