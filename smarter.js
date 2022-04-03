@@ -44,8 +44,6 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.static('public'));
 
 //app.use(express.static(path.join(__dirname,'public'))); use this if needed to for the server deployment version
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
 
 require('./routes/app.routes')(app);
 require('./routes/user.routes')(app);
