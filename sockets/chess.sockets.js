@@ -15,13 +15,34 @@ module.exports = class ChessSocketHandler{
                 players:[socket.id],
                 puid:[socket.puid],
                 status:"queue",
-                game: new Chess()
+                game: new Chess(),
+                type:"human"
             }
             socket.match = matchid;
             this.lobby[socket.username] = [socket.id];
             io.emit("matches",socket.username,matchid,this.matches[matchid].status);
             io.to(socket.id).emit('set',matchid);
     });
+}
+    createCPUGame(socket,io){
+        //stop here test out cpu functionality on the client side
+        socket.on('createCPU', () => {
+     
+        const matchid = generate.generate();
+        this.matches[matchid] = {
+            players:[socket.id],
+            puid:[socket.puid],
+            status:"ongoing",
+            game: new Chess(),
+            type:"cpu"
+        }
+        socket.match = matchid;
+        this.lobby[socket.username] = [socket.id];
+        io.emit("matches",socket.username,matchid,this.matches[matchid].status);
+        io.to(socket.id).emit('set',matchid);
+
+        io.to(this.matches[matchid].players[0]).emit("lobby",matchid,"white","white");
+});
 }
 
     cancelLobby(socket,io){
@@ -80,54 +101,72 @@ module.exports = class ChessSocketHandler{
         // 03/19/22
         socket.on('disconnect', () => {
           
-            
             try{
-                if(socket.match && this.matches[socket.match].players.length == 1){
-                      console.log(socket.challenger);
-                    io.to(this.users[socket.challenger['to']].id).emit("cancelChallenger",socket.challenger['from']);
+                if(this.matches[socket.match].type == "human"){
+                    if(socket.match && this.matches[socket.match].players.length == 1){
+                        console.log(socket.challenger);
+                      io.to(this.users[socket.challenger['to']].id).emit("cancelChallenger",socket.challenger['from']);
+                  }
+                  else{
+                  
+                  if(socket.id != this.matches[socket.match].players[0]){
+                      io.to(this.matches[socket.match].players[0]).emit("default",this.matches[socket.match].game.history());
+                      }
+                  else{
+                      io.to(this.matches[socket.match].players[1]).emit("default",this.matches[socket.match].game.history());
+                  }
+                  userController.iterateLoses(socket.puid);
+  
+                  if(socket.puid != this.matches[socket.match].puid[0]){
+                      userController.iterateWins(this.matches[socket.match].puid[0]);
+                  }
+                  else{
+                      userController.iterateWins(this.matches[socket.match].puid[1]);
+                  }
+  
+                  }
+  
+                  delete this.matches[socket.match];
+  
+                  let matchkeys = Object.keys(this.matches);
+                 
+                  let status =[]
+                  let matchids=[]
+                  
+      
+                  for(let s=0;s<matchkeys.length;s++){
+                      status.push(this.matches[matchkeys[s]].status);
+                      matchids.push(matchkeys[s])
+                  }
+                  
+                io.emit("updtmatch",matchids,status)
+  
+                delete this.users[socket.username]
+                const allUsers = Object.keys(this.users);
+                io.emit("users",allUsers,allUsers.length);
+
                 }
                 else{
-                
-                if(socket.id != this.matches[socket.match].players[0]){
-                    io.to(this.matches[socket.match].players[0]).emit("default",this.matches[socket.match].game.history());
+                    delete this.matches[socket.match];
+  
+                    let matchkeys = Object.keys(this.matches);
+                   
+                    let status =[]
+                    let matchids=[]
+                    
+        
+                    for(let s=0;s<matchkeys.length;s++){
+                        status.push(this.matches[matchkeys[s]].status);
+                        matchids.push(matchkeys[s])
                     }
-                else{
-                    io.to(this.matches[socket.match].players[1]).emit("default",this.matches[socket.match].game.history());
-                }
-                userController.iterateLoses(socket.puid);
-
-                if(socket.puid != this.matches[socket.match].puid[0]){
-                    userController.iterateWins(this.matches[socket.match].puid[0]);
-                }
-                else{
-                    userController.iterateWins(this.matches[socket.match].puid[1]);
-                }
-
-                }
-
-                delete this.matches[socket.match];
-
-                let matchkeys = Object.keys(this.matches);
-               
-                let status =[]
-                let matchids=[]
-                
+                    
+                  io.emit("updtmatch",matchids,status)
     
-                for(let s=0;s<matchkeys.length;s++){
-                    status.push(this.matches[matchkeys[s]].status);
-                    matchids.push(matchkeys[s])
+                  delete this.users[socket.username]
+                  const allUsers = Object.keys(this.users);
+                  io.emit("users",allUsers,allUsers.length);
                 }
-                
-              io.emit("updtmatch",matchids,status)
-
-              delete this.users[socket.username]
-              const allUsers = Object.keys(this.users);
-              io.emit("users",allUsers,allUsers.length);
-             
-            
-                
-              
-                
+               
             }catch(e){
 
             }
@@ -147,39 +186,67 @@ module.exports = class ChessSocketHandler{
     check(socket,io){
         socket.on('isFinished', (mid) => {
             try{
-            const game = this.matches[mid].game;
-            if(game.isFinished()){
-                const players = this.matches[mid].players
-
-
-                userController.iterateLoses(socket.puid);
-
-                if(socket.puid != this.matches[mid].puid[0]){
-                    userController.iterateWins(this.matches[mid].puid[0]);
+                if(this.matches[mid].type == "human"){
+                    const game = this.matches[mid].game;
+                    if(game.isFinished()){
+                        const players = this.matches[mid].players
+        
+        
+                        userController.iterateLoses(socket.puid);
+        
+                        if(socket.puid != this.matches[mid].puid[0]){
+                            userController.iterateWins(this.matches[mid].puid[0]);
+                        }
+                        else{
+                            userController.iterateWins(this.matches[mid].puid[1]);
+                        }
+                        for(let r=0;r< players.length;r++){
+                            io.to(players[r]).emit("end", this.matches[mid].game.configurations(),null);
+                        }
+                      
+                        if(this.matches[mid]){
+                            delete this.matches[mid];
+        
+                            const matchkeys = Object.keys(this.matches);
+                
+                            let status =[]
+                            let matchids=[]
+                
+                            for(let s=0;s<matchkeys.length;s++){
+                                status.push(this.matches[matchkeys[s]].status);
+                                matchids.push(matchkeys[s])
+                            }
+                            
+                            io.emit("updtmatch",matchids,status)
+                            }
+                        }
+                    
                 }
                 else{
-                    userController.iterateWins(this.matches[mid].puid[1]);
-                }
-                for(let r=0;r< players.length;r++){
-                    io.to(players[r]).emit("end", this.matches[mid].game.configurations(),null);
-                }
-              
-                if(this.matches[mid]){
-                    delete this.matches[mid];
-
-                    const matchkeys = Object.keys(this.matches);
+                    const game = this.matches[mid].game;
+                    if(game.isFinished()){
+                        const players = this.matches[mid].players
+                        io.to(players[0]).emit("end", this.matches[mid].game.configurations(),null);
+                        if(this.matches[mid]){
+                            delete this.matches[mid];
         
-                    let status =[]
-                    let matchids=[]
-        
-                    for(let s=0;s<matchkeys.length;s++){
-                        status.push(this.matches[matchkeys[s]].status);
-                        matchids.push(matchkeys[s])
-                    }
+                            const matchkeys = Object.keys(this.matches);
+                
+                            let status =[]
+                            let matchids=[]
+                
+                            for(let s=0;s<matchkeys.length;s++){
+                                status.push(this.matches[matchkeys[s]].status);
+                                matchids.push(matchkeys[s])
+                            }
+                            
+                            io.emit("updtmatch",matchids,status)
+                            }
+                        }
                     
-                    io.emit("updtmatch",matchids,status)
-                    }
-                }}catch(e){
+                }
+                //here
+           }catch(e){
 
                 }    
              
@@ -188,7 +255,9 @@ module.exports = class ChessSocketHandler{
 
     surrender(socket,io){
         socket.on('surrender', (mid,color) => {
-                const players = this.matches[mid].players
+            const players = this.matches[mid].players
+            if(this.matches[mid].type == "human"){
+                
 
                 userController.iterateLoses(socket.puid);
             
@@ -218,13 +287,37 @@ module.exports = class ChessSocketHandler{
             }
             
             io.emit("updtmatch",matchids,status)
+            }
+
+            else{
+                
+            io.to(players[0]).emit("end", this.matches[mid].game.configurations(),color,this.matches[mid].game.history());
+                
+            delete this.matches[mid];
+
+            const matchkeys = Object.keys(this.matches);
+
+            let status =[]
+            let matchids=[]
+
+            for(let s=0;s<matchkeys.length;s++){
+                status.push(this.matches[matchkeys[s]].status);
+                matchids.push(matchkeys[s])
+            }
+            
+            io.emit("updtmatch",matchids,status)
+            
+            }
+         
             });    
     }
 
     moves(socket,io){
 
         socket.on('moves', (move,mid) => {
-            const players = this.matches[mid].players
+
+            if(this.matches[mid].type == "human"){
+                const players = this.matches[mid].players
                 if(this.matches[mid].game.move(move.start,move.last)){
 
                     if(move.condition){
@@ -268,6 +361,64 @@ module.exports = class ChessSocketHandler{
                         io.to(players[r]).emit("switch",this.matches[mid].game.turn());
                     }
                 }
+
+            }
+            else{
+                const players = this.matches[mid].players
+             
+
+                if(this.matches[mid].game.move(move.start,move.last)){
+
+                    if(move.condition){
+                        let temp = "";
+
+                        if(move.piece == "♞" || move.piece == "♘"){
+                            temp = "n";
+                            if(this.matches[mid].game.turn() == "white"){
+                                this.matches[mid].game.setPiece(move.last,temp.toLowerCase());
+                            }
+                            else{
+                                this.matches[mid].game.setPiece(move.last,temp.toUpperCase());
+                            }
+                        }
+
+                        if(move.piece == "♝" || move.piece == "♗"){
+                            temp = "b";
+                            if(this.matches[mid].game.turn() == "white"){
+                                this.matches[mid].game.setPiece(move.last,temp.toLowerCase());
+                            }
+                            else{
+                                this.matches[mid].game.setPiece(move.last,temp.toUpperCase());
+                            }
+                        }
+
+                        if(move.piece == "♖" || move.piece == "♜"){
+                            temp = "r";
+                            if(this.matches[mid].game.turn() == "white"){
+                                this.matches[mid].game.setPiece(move.last,temp.toLowerCase());
+                            }
+                            else{
+                                this.matches[mid].game.setPiece(move.last,temp.toUpperCase());
+                            }
+                        }
+                    }
+                    io.to(players[0]).emit("rmoves",move);
+                    const ai = this.matches[mid].game.aiMove(2)
+                    //stop here implement cpu extract data from object and play move as if move was human
+                    const start = Object.keys(ai)[0]
+                    const last = ai[start]
+    
+                    console.log(start);
+                    console.log(last);
+
+                    io.to(players[0]).emit("switch",this.matches[mid].game.turn());
+                    io.to(players[0]).emit("rmoves", {'start':start,'last':last});
+                    io.to(players[0]).emit("switch",this.matches[mid].game.turn());
+                    
+                }
+
+            }
+
         });
     }
 
@@ -279,22 +430,13 @@ module.exports = class ChessSocketHandler{
                 puid:[socket.puid],
                 players:[socket.id],
                 status:"queue",
-                game: new Chess()
+                game: new Chess(),
+                type:"human"
             }
             socket.match = matchid;
             io.to(socket.id).emit('set',matchid);
             io.to(this.users[username].id).emit("challenger",matchid,requester);
     });
-
-    }
-
-   
-
-    confirmMove(socket,io){
-
-    }
-
-    isFinished(socket,io){
 
     }
 

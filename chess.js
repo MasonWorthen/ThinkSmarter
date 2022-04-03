@@ -13,6 +13,9 @@ module.exports = class Chess{
     setPiece(v1,v2){
         this.game.setPiece(v1,v2)
     }
+    aiMove(level){
+        return this.game.aiMove(level);
+    }
   
     print(){
         return this.game.printToConsole()

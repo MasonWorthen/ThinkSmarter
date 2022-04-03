@@ -21,11 +21,11 @@ module.exports = io => {
 
         manager.CHESS.check(socket,io);
 
-        manager.CHESS.isFinished(socket,io);
-
         manager.MESSAGES.message(socket,io);
         
         manager.CHESS.createLobby(socket,io);
+
+        manager.CHESS.createCPUGame(socket,io);
         manager.CHESS.joinLobby(socket,io);
 
     });

@@ -72,7 +72,10 @@ function renderResearch(req,res){
                 }
                 else{
                     non_binary +=1;
+                }
+
                 }    
+
             }
             const researchObj = {
                 'memory':memTotal,

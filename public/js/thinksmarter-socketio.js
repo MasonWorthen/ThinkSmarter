@@ -203,6 +203,17 @@ $(".lobbybtn").click(()=>{
     $(".canceled").show();
 
 });
+$(".cpu").click(()=>{
+    $(".cpu").hide();
+    $(".lobbybtn").hide();
+    $("#request").hide();
+    socket.emit("createCPU");
+    $(".match-parent").hide()
+    $('.search').show();
+    $(".canceled").show();
+
+});
+
 
 socket.on("matches",(user,matchid,status)=>{
     let row = document.createElement("tr");
@@ -882,9 +893,18 @@ $('td').click(function(){
     });
 
     socket.on("rmoves",(moves)=>{
-        
+        //update the moves
         socket.emit("isFinished",match);
-        if(moves.piece == '♔' && moves.last == "g1" && moves.start == "e1"){
+
+        if(moves.piece == undefined){
+            moves.piece = $(`.${moves.start.toLowerCase()}`).text();
+            $(".moves").prepend('<p>'+moves.piece+ ' moved from '+ moves.start+" to "+moves.last+'</p>');
+            $("."+moves.start.toLowerCase()).text('');
+            $("."+moves.last.toLowerCase()).text(moves.piece); 
+
+        }
+        else{
+           if(moves.piece == '♔' && moves.last == "g1" && moves.start == "e1"){
             $('.g1').text('♔');
             $('.f1').text('♖');
             $('.h1').text('');
@@ -898,7 +918,9 @@ $('td').click(function(){
         }
         $(".moves").prepend('<p>'+moves.piece+ ' moved from '+ moves.start+" to "+moves.last+'</p>');
         $("."+moves.start).text('');
-        $("."+moves.last).text(moves.piece);
+        $("."+moves.last).text(moves.piece); 
+        }
+        
 
     });
 });
