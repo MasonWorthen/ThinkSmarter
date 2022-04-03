@@ -52,7 +52,6 @@ module.exports = class Chess{
     move(start,end){
         if(this.isValid(start,end)){
            this.game.move(start,end);
-            console.log(this.game.exportJson())
             return true;
         }
         else{
