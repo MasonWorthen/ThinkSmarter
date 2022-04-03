@@ -73,13 +73,9 @@ function renderResearch(req,res){
                 else{
                     non_binary +=1;
                 }
-                console.log(memTotal);
-                console.log(criTotal);
-                console.log(decTotal);
-                console.log(male);
-                console.log(female)
-                console.log(non_binary);
-                
+
+                }    
+
             }
             const researchObj = {
                 'memory':memTotal,
@@ -87,9 +83,9 @@ function renderResearch(req,res){
                 'decision':decTotal,
                 'male':male,
                 'percentage':{
-                    'male':(male/keys.length)*100,
-                    'female':(female/keys.length)*100,
-                    'non-binary':(non_binary/keys.length)*100
+                    'male':parseFloat((male/keys.length)*100).toFixed(2),
+                    'female':parseFloat((female/keys.length)*100).toFixed(2),
+                    'non-binary':parseFloat((non_binary/keys.length)*100).toFixed(2)
                 },
                 'female':female,
                 'non-binary':non_binary,

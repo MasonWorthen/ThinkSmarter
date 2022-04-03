@@ -24,11 +24,11 @@ $(document).ready(function(){
  
     function renderBarChart(data,labels,label,element,container){
         $(`#${element}`).remove();
-        $(container).append($(`<canvas id="${element}"></canvas>`))
+        $(container).append($(`<div class="col m-3" style="height:300px; width:300px;"> <canvas id="${element}"></canvas></div>`))
         const ctx = $(`#${element}`);
        
         const myChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels:labels,
             datasets: [{
@@ -47,9 +47,7 @@ $(document).ready(function(){
  
     renderPieChart([$('.male').text(),$('.female').text(),$('.other').text()], ['Male','Female','Other'],"Gender Group Improvement","myChart",".graphs");
     renderPieChart([20,50,20], ['Male','Female','Other'],"Gender Group Improvement","myChart1",".graphs");
-    renderPieChart([20,50,20], ['Male','Female','Other'],"Gender Group Improvement","myChart2",".graphs");
- 
-    //renderPieChart([50,50], ['Yes','No'],"Gender Group Improvement","myChart",".data");
+    renderBarChart([$('.critical').text(),$('.memory').text(),$('.decide').text()], ['Memorization','CIT','DMS'],"Gender Group Improvement","myChart3",".graphs");
  
  
   });

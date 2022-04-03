@@ -9,7 +9,6 @@ module.exports = app => {
         res.end();
     });
     router.get('/forgot',render.renderRecovery);
-    router.get('/game',render.renderGame);
     router.get('/survey',render.renderSurvey);
     router.get('/research',render.renderResearch);
     router.get('/results/:data',render.renderResults);
