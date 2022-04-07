@@ -141,10 +141,6 @@ module.exports = class ChessSocketHandler{
                   
                 io.emit("updtmatch",matchids,status)
   
-                delete this.users[socket.username]
-                const allUsers = Object.keys(this.users);
-                io.emit("users",allUsers,allUsers.length);
-
                 }
                 else{
                     delete this.matches[socket.match];
@@ -162,13 +158,17 @@ module.exports = class ChessSocketHandler{
                     
                   io.emit("updtmatch",matchids,status)
     
-                  delete this.users[socket.username]
-                  const allUsers = Object.keys(this.users);
-                  io.emit("users",allUsers,allUsers.length);
                 }
+                console.log(socket.username);
+                
+                delete this.users[socket.username]
+                const allUsers = Object.keys(this.users);
+                io.emit("users",allUsers,allUsers.length);
                
             }catch(e){
-
+                delete this.users[socket.username]
+                const allUsers = Object.keys(this.users);
+                io.emit("users",allUsers,allUsers.length);
             }
                     
         
