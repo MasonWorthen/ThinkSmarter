@@ -2,7 +2,7 @@ $(document).ready(function(){
  
     function renderPieChart(data,labels,label,element,container){
         $(`#${element}`).remove();
-        $(container).append($(`<div class="col m-3" style="height:300px; width:300px;"> <canvas id="${element}"></canvas></div>`))
+        $(container).append($(`<div class="col-md-4 m-3" style="height:300px; width:300px;"> <canvas id="${element}"></canvas></div>`))
         const ctx = $(`#${element}`);
        
         const myChart = new Chart(ctx, {
@@ -24,7 +24,7 @@ $(document).ready(function(){
  
     function renderBarChart(data,labels,label,element,container){
         $(`#${element}`).remove();
-        $(container).append($(`<div class="col m-3" style="height:300px; width:300px;"> <canvas id="${element}"></canvas></div>`))
+        $(container).append($(`<div class="col-md-4 m-3" style="height:300px; width:300px;"> <canvas id="${element}"></canvas></div>`))
         const ctx = $(`#${element}`);
        
         const myChart = new Chart(ctx, {

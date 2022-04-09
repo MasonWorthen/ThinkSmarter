@@ -270,9 +270,11 @@ module.exports = class ChessSocketHandler{
                 else{
                     userController.iterateWins(this.matches[mid].puid[1]);
                 }
+                let result = this.matches[mid].game.configurations();
+                result['computer'] = false;
 
                 for(let r=0;r< players.length;r++){
-                    io.to(players[r]).emit("end", this.matches[mid].game.configurations(),color,this.matches[mid].game.history());
+                    io.to(players[r]).emit("end", result,color,this.matches[mid].game.history());
                 }
             delete this.matches[mid];
 
@@ -290,8 +292,11 @@ module.exports = class ChessSocketHandler{
             }
 
             else{
+            
+            let result = this.matches[mid].game.configurations();
+            result['computer'] = true;
                 
-            io.to(players[0]).emit("end", this.matches[mid].game.configurations(),color,this.matches[mid].game.history());
+            io.to(players[0]).emit("end", result,color,this.matches[mid].game.history());
                 
             delete this.matches[mid];
 
@@ -411,9 +416,10 @@ module.exports = class ChessSocketHandler{
                     console.log(start);
                     console.log(last);
 
-                    io.to(players[0]).emit("switch",this.matches[mid].game.turn());
                     io.to(players[0]).emit("rmoves", {'start':start,'last':last});
-                    io.to(players[0]).emit("switch",this.matches[mid].game.turn());
+                    io.to(players[0]).emit("switch",this.matches[mid].game.turn(),"computer");
+                   
+                    
                     
                 }
 

@@ -35,9 +35,19 @@ function renderResults(req,res){
     res.render('results',{data:req.params.data});
 }
 function renderSurvey(req,res){
-  res.render('survey',{'SurveyPageMessage':'','SurveyErrorMessage': ''});
+    if(!req.session.status){
+        res.redirect('login')
+   }
+   else{
+       res.render('survey',{'SurveyPageMessage':'','SurveyErrorMessage': ''});
+   }
+  
 }
 function renderResearch(req,res){
+    if(!req.session.status){
+        res.redirect('login')
+   }
+   else{
     const db = firebase.getDatabase(firebase.firebaseApp)
     const referenceCount = firebase.ref(db);
 
@@ -99,6 +109,8 @@ function renderResearch(req,res){
     }).catch((error) => {
         res.end(error)
     });
+   }
+  
 }
       
 function renderRegister(req,res){

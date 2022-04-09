@@ -33,11 +33,18 @@ module.exports = function(req,type){
             err['RegisterErrorMessage'] = 'The username you entered contains special characters.';
             return [err,req.body]; 
          }
+
+         if(req.body.username != req.body.username.replace(' ','')){
+            err["isValid"] = false
+            err['RegisterErrorMessage'] = 'The user name you enter is invalid please try again.';
+            return [err,req.body]; 
+         }
          if(req.body.password != req.body.repassword){
             err["isValid"] = false
             err['RegisterErrorMessage'] = 'The password & the password you enter do not match';
             return [err,req.body]; 
          }
+
 
     }
     else if(type=='recovery'){
