@@ -73,6 +73,7 @@ module.exports = class ChessSocketHandler{
     connected(socket,io){
         socket.on('user', (id,name) => {
             socket.username = name;
+            io.to(socket.id).emit("transfer",`Welcome back ${name} were happy to have you here!`,"@Admin");
             socket.match = null;
             socket.puid = id
             this.users[name] = {id: socket.id, puid: id}

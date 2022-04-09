@@ -111,12 +111,17 @@ $(document).ready(function(){
         btnrequest.value = matchid
         btnrequest.style ="background-color:transparent; border:none;";
         connecteduser.addEventListener('click',function(evt){
+            let confirmWindow = window.confirm(`Would you like to accept a request from ${username}`);
+            if(confirmWindow){
             $(".lobbybtn").hide();
             $(".match-parent").hide()
               socket.emit("join",matchid);
               $(`.${username}`).remove();
               gameRequestCounter -=1
               $(".gamerequestcount").text(gameRequestCounter);
+            }
+           
+ 
 
         });
         connecteduser.className =`text-center  ${username}`
