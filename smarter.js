@@ -12,12 +12,12 @@ const cors = require('cors');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cors({
+/*app.use(cors({
     origin: '*'
 }));
 
 //uses this when deploying server code for sockets
-/*app.use(cors({
+app.use(cors({
     origin: '*',
     credentials:true,
     methods: ["GET", "POST"]
