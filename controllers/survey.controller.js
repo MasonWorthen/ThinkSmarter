@@ -6,7 +6,6 @@ function addSurvey(req,res){
     let validatorObject = VALIDATOR(req,'survey');
     if(validatorObject[0].isValid){
     req.body = validatorObject[1];
-    console.log(req.body)
     const db = firebase.getDatabase(firebase.firebaseApp);
     firebase.set(firebase.ref(db, 'surveys/'+key.generate(20)),req.body).then((userCredential) => {
         res.render('survey',{'SurveyPageMessage':'Survey has sucessfully been submitted. Thank you!','SurveyErrorMessage': ''});

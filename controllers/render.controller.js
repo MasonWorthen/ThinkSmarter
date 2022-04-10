@@ -54,7 +54,6 @@ function renderResearch(req,res){
     firebase.get(firebase.child(referenceCount, '/surveys')).then((snapshot) => {
         if (snapshot.exists()) {
             let data = snapshot.val();
-            console.log(data);
             let keys = Object.keys(data);
             let criTotal = 0;
             let male = 0;

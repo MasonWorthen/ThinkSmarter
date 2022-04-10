@@ -443,12 +443,8 @@ socket.on("updtmatch",(matchids,status)=>{
         try{
             if(computer =="computer"){
                 
-             
-                    $('.playerOpp').text("Waiting for opponent...")
-                
-               
-                    
-                
+                    $('.playerOpp').text("Waiting for opponent...");
+                    current = 'black';    
             }
             else{
                 current = turn;
@@ -941,6 +937,7 @@ $('td').click(function(){
             
             setTimeout(function(){
                 $('.playerOpp').text("Your turn")
+                current = "white";
             //if the move.pieces is undefined that means computer play is active and therfore it has to select the sqaure and move it on the interface
             moves.piece = $(`.${moves.start.toLowerCase()}`).text();
             $(".moves").prepend('<p>'+moves.piece+ ' moved from '+ moves.start+" to "+moves.last+'</p>');

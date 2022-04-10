@@ -1,6 +1,6 @@
 //These are just a list of words that are banned.
 //ThinkSmarter is an inclusive and negative free environment foul lanagauge will not be tollerated.
-const banned = ["bitch","nigga","nigger","ass","stupid","whore","pussy","fuck","dick","cracker","stupid","loser","fag"];
+const banned = ["bitch","nigga","nigger","ass","stupid","whore","pussy","fuck","hoe","slut","dick","cracker","stupid","loser","fag"];
 module.exports = class MessageSocketHandler{
     _botChecker(message){
             for(let r=0; r< banned.length;r++){
