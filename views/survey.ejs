@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="js/message-fade.js"></script>
+    <script src="js/message-fade-redirect.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="bg-black">
@@ -35,7 +35,7 @@
                                         <h4 class="mt-1 mb-5 pb-1">Complete the survey</h4>
                                     </div>
                                     <p class="text-center text-danger alert"><%= SurveyErrorMessage %></p>
-                                    <p class="text-center text-success alert"><%= SurveyPageMessage %></p>
+                                    <p class="text-center text-success alert page"><%= SurveyPageMessage %></p>
 
                                     <form method="POST" action="/survey">
 

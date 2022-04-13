@@ -44,10 +44,6 @@ function renderSurvey(req,res){
   
 }
 function renderResearch(req,res){
-    if(!req.session.status){
-        res.redirect('login')
-   }
-   else{
     const db = firebase.getDatabase(firebase.firebaseApp)
     const referenceCount = firebase.ref(db);
 
@@ -110,7 +106,7 @@ function renderResearch(req,res){
     });
    }
   
-}
+
       
 function renderRegister(req,res){
     res.render('register',{'RegisterErrorMessage':''});

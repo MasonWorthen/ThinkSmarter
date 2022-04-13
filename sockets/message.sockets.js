@@ -3,8 +3,9 @@
 const banned = ["bitch","nigga","nigger","ass","stupid","whore","pussy","fuck","hoe","slut","dick","cracker","stupid","loser","fag"];
 module.exports = class MessageSocketHandler{
     _botChecker(message){
+            const temporary_message = message.toLowerCase()
             for(let r=0; r< banned.length;r++){
-                    if(message.includes(banned[r])){
+                    if(temporary_message.includes(banned[r])){
                         return false;
                     }
             }
