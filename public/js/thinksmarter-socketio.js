@@ -353,7 +353,15 @@ socket.on("updtmatch",(matchids,status)=>{
                 }
 
                 else{
-                    $('.playerOpp').text("Waiting for opponent...")
+                    //fixed issue wth text change after user tries to move if move location is invaid
+                    
+                    for(let r=0;r<possibleChose.length;r++){
+                        if(possibleChose[r].toLowerCase() == move.toLowerCase()){
+                            $('.playerOpp').text("Waiting for opponent...")
+                        }
+                    }
+
+                   
                     socket.emit("moves",{start:chose,last:move,piece:piece,condition:false},match);
                    
                     for(let r=0;r<possibleChose.length;r++){
